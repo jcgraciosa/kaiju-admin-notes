@@ -59,7 +59,7 @@ Kaiju is composed of a head node and 8 compute nodes. Information on the IP host
 192.168.32.17   node07.cluster node07 n7
 192.168.32.18   node08.cluster node08 n8
 ```
-As of December 11, 2024, compute nodes n5 to n8 are down so we can only use nodes n1 to n4. To determine the total number of CPUs in each node, run ```nproc```. To determine the number and detailed hardware specifications of each node, one can run ```lscpu```. Running ```lscpu``` for the head node:
+As of <s>December 11, 2024, compute nodes n5 to n8 are down so we can only use nodes n1 to n4 </s>  February 28, 2025, all nodes (1-8) are up. To determine the total number of CPUs in each node, run ```nproc```. To determine the number and detailed hardware specifications of each node, one can run ```lscpu```. Running ```lscpu``` for the head node:
 
 ```bash
 Architecture:        x86_64
@@ -116,13 +116,13 @@ L3 cache:            36608K
 NUMA node0 CPU(s):   0-25,52-77
 NUMA node1 CPU(s):   26-51,78-103
 ```
-Thus, the head node has a total of 40 CPUs, while _each_ compute node has 104 CPUs.
+Thus, the head node has a total of 40 CPUs, while _each_ compute node (1 to 8) has 104 CPUs.
 
 Kaiju was set-up such that everything in ```/opt/cluster``` are available to all nodes via NFS. Thus, any software that is needed by all nodes should be installed in this directory. To install a \<package\>, IF YOU REALLY NEED TO, do the following steps:
 
 ```bash
 $ dnf repoquery --whatprovides <package> #  display all available packages providing "package"
-$ sudo pdsh -f 10 -w n[0-4] dnf -y install <some-package>|sort -st: -nk1.2 # install "some-package" in nodes 0 to 4
+$ sudo pdsh -f 10 -w n[0-8] dnf -y install <some-package>|sort -st: -nk1.2 # install "some-package" in nodes 0 to 4
 ```
 The ```-f``` flag sets the maximum number of simultaneous remote commands, while ```-w``` sets the target of the commands. The ```sudo``` command above indicates that you are running the command as a super user. As much as possible, it is recommended that only the administrator of should install the packages, but let's worry about this later (i.e. "let's cross the bridge when we get there"). 
 
@@ -233,7 +233,7 @@ Slurm is an open source cluster management and job scheduling system for Linux c
 
 1. Make sure that the clocks across all nodes are synchronized by checking them:
 ```bash
-$ pdsh -f 10 -w n[0-4] date -Ins|sort -st: -nk1.2
+$ pdsh -f 10 -w n[0-8] date -Ins|sort -st: -nk1.2
 ```
 If they are not, then sync-ing packages need to be installed like ```chrony``` in ALL nodes.
 
