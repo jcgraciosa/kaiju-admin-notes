@@ -159,10 +159,11 @@ fix_permissions() {
 install_modulefile() {
     local src="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/modulefiles/underworld3/development.lua"
     local dst="/opt/cluster/modulefiles/underworld3"
-    echo "==> Installing Lmod modulefile to ${dst}..."
+    local name="development-$(date +%d%b%y)"
+    echo "==> Installing Lmod modulefile to ${dst}/${name}.lua..."
     mkdir -p "${dst}"
-    cp "${src}" "${dst}/development.lua"
-    echo "==> Modulefile installed. Users can now run: module load underworld3/development"
+    cp "${src}" "${dst}/${name}.lua"
+    echo "==> Modulefile installed. Users can now run: module load underworld3/${name}"
 }
 
 verify_install() {
@@ -210,6 +211,6 @@ if [ "${1}" = "install" ]; then
     echo "=========================================="
     echo "Shared installation complete!"
     echo "Users can now activate with:"
-    echo "  module load underworld3/development"
+    echo "  module load underworld3/development-$(date +%d%b%y)"
     echo "=========================================="
 fi
