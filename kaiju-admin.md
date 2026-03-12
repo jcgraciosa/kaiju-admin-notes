@@ -402,39 +402,17 @@ Do note that when this is done, we cannot use mpirun or mpiexec as discussed [he
 
 ## G. Underworld3 Installation
 
-Underworld3 (UW3) is a geodynamics simulation framework. It can be installed either per-user or as a shared system-wide installation accessible to all users via Lmod.
+For full installation and usage instructions, see the developer guide in the UW3 repo:
+[`docs/developer/guides/kaiju-cluster-setup.md`](https://github.com/jcgraciosa/underworld3/blob/development/docs/developer/guides/kaiju-cluster-setup.md)
 
-### Architecture
+### Scripts (this repo)
 
-```
-pixi kaiju env  → Python 3.12, sympy, scipy, pint, ...  (conda-forge, no MPI)
-spack           → openmpi@4.1.6                          (cluster MPI for Slurm)
-source build    → mpi4py, PETSc+AMR+petsc4py, h5py       (linked to spack OpenMPI)
-```
-
-MPI-dependent packages **must** be built from source against spack's OpenMPI. Pre-built wheels from PyPI or conda-forge link against a different MPI and will not work with Slurm.
-
-### Scripts (in `kaiju-admin-notes` repo)
-
-| Script | Purpose |
-|--------|---------|
+| File | Purpose |
+|------|---------|
 | `uw3_install_kaiju_amr.sh` | Per-user install to `$HOME/uw3-installation` |
 | `uw3_install_kaiju_shared.sh` | Shared install to `/opt/cluster/software/underworld3` |
 | `uw3_slurm_job.sh` | Slurm job script template |
 | `modulefiles/underworld3/development.lua` | Lmod modulefile template |
-
-### Per-user installation
-
-```bash
-# On Kaiju head node
-git clone https://github.com/jcgraciosa/kaiju-admin-notes.git ~/install_scripts
-source ~/install_scripts/uw3_install_kaiju_amr.sh install
-```
-
-Takes ~1 hour (dominated by PETSc build). In future sessions:
-```bash
-source ~/install_scripts/uw3_install_kaiju_amr.sh
-```
 
 ### Shared installation (admin)
 
@@ -444,21 +422,6 @@ source ~/install_scripts_admin/uw3_install_kaiju_shared.sh install
 ```
 
 Installs to `/opt/cluster/software/underworld3/`, sets world-readable permissions, and copies the Lmod modulefile to `/opt/cluster/modulefiles/underworld3/development-<date>.lua`.
-
-Users then activate with:
-```bash
-module load underworld3/development-12Mar26   # date matches install date
-```
-
-### Known gotchas
-
-**h5py pulls in numpy/mpi4py wheels** — `pip install h5py` without `--no-deps` silently replaces the source-built mpi4py (spack OpenMPI) with a conda-forge wheel. Always use `--no-deps` when installing h5py. The install scripts handle this correctly.
-
-**numpy ABI mismatch** — If numpy is upgraded (e.g. 1.26.4 → 2.4.3) after petsc4py is compiled, petsc4py fails with `numpy.dtype size changed`. Fix: downgrade numpy back to the version used during the PETSc build, then rebuild h5py with `--no-deps`.
-
-**PARMMG configure failure** — pixi's conda `ld` linker requires transitive shared library dependencies to be explicitly linked. `libmmg.so` was built with SCOTCH support, causing PARMMG's `MMG_WORKS` link test to fail. Fixed in `build-petsc-kaiju.sh` by adding `-DUSE_SCOTCH=OFF` to MMG's cmake arguments.
-
-**spack LD_LIBRARY_PATH** — spack uses RPATH internally but does not set `LD_LIBRARY_PATH`. pixi's linker cannot resolve spack transitive deps without it. Fixed in `uw3_install_kaiju_amr.sh` by extracting all spack prefixes from `CMAKE_PREFIX_PATH` (set by `spack load --sh`) and adding their `lib/` dirs to `LD_LIBRARY_PATH`.
 
 
 
