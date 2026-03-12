@@ -35,7 +35,7 @@ SPACK_MPI_VERSION="openmpi@4.1.6"
 export INSTALL_PATH="${HOME}/uw3-installation"
 export UW3_PATH="${INSTALL_PATH}/underworld3"
 export UW3_BRANCH="development"
-export UW3_REPO="https://github.com/underworldcode/underworld3.git"
+export UW3_REPO="https://github.com/jcgraciosa/underworld3.git"
 
 # ============================================================
 # DERIVED PATHS — do not edit below this line
