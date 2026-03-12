@@ -154,10 +154,10 @@ install_petsc() {
 install_h5py() {
     echo "==> Building h5py against PETSc HDF5..."
     # Point to PETSc's HDF5 installation to ensure version consistency
+    # --no-deps: prevent pip from replacing source-built mpi4py (spack OpenMPI) or pixi numpy
     CC=mpicc \
     HDF5_MPI="ON" \
     HDF5_DIR="${PETSC_DIR}/${PETSC_ARCH}" \
-    # --no-deps: prevent pip from replacing source-built mpi4py (spack OpenMPI) or pixi numpy
     pip install --no-binary=h5py --no-cache-dir --force-reinstall --no-deps h5py
     echo "==> h5py installed"
 }
