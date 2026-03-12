@@ -157,12 +157,12 @@ fix_permissions() {
 }
 
 install_modulefile() {
-    local src="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/modulefiles/underworld3/development.lua"
+    local src="$(dirname "$(realpath "${BASH_SOURCE[0]}")")/modulefiles/underworld3/development.tcl"
     local dst="/opt/cluster/modulefiles/underworld3"
     local name="development-$(date +%d%b%y)"
-    echo "==> Installing Lmod modulefile to ${dst}/${name}.lua..."
+    echo "==> Installing modulefile to ${dst}/${name}..."
     mkdir -p "${dst}"
-    cp "${src}" "${dst}/${name}.lua"
+    cp "${src}" "${dst}/${name}"
     echo "==> Modulefile installed. Users can now run: module load underworld3/${name}"
 }
 
