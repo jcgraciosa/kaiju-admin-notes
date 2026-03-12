@@ -412,7 +412,7 @@ For full installation and usage instructions, see the developer guide in the UW3
 | `uw3_install_kaiju_amr.sh` | Per-user install to `$HOME/uw3-installation` |
 | `uw3_install_kaiju_shared.sh` | Shared install to `/opt/cluster/software/underworld3` |
 | `uw3_slurm_job.sh` | Slurm job script template |
-| `modulefiles/underworld3/development.lua` | Lmod modulefile template |
+| `modulefiles/underworld3/development.tcl` | Environment Modules modulefile template |
 
 ### Shared installation (admin)
 
@@ -421,7 +421,7 @@ git clone https://github.com/jcgraciosa/kaiju-admin-notes.git ~/install_scripts_
 source ~/install_scripts_admin/uw3_install_kaiju_shared.sh install
 ```
 
-Installs to `/opt/cluster/software/underworld3/`, sets world-readable permissions, and copies the Lmod modulefile to `/opt/cluster/modulefiles/underworld3/development-<date>.lua`.
+Installs to `/opt/cluster/software/underworld3/`, sets world-readable permissions, and copies the modulefile to `/opt/cluster/modulefiles/underworld3/development-<date>`.
 
 
 

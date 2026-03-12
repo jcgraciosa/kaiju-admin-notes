@@ -11,8 +11,7 @@
 #   source uw3_install_kaiju_shared.sh         # activate shared environment
 #   source uw3_install_kaiju_shared.sh install # full installation (first time only)
 #
-# After install, copy the Lmod modulefile:
-#   cp modulefiles/underworld3/development.lua /opt/cluster/modulefiles/underworld3/
+# After install, the modulefile is automatically installed by install_modulefile().
 #
 # For per-user installs, use uw3_install_kaiju_amr.sh instead.
 #
